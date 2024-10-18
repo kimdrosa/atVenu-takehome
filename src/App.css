@@ -28,6 +28,30 @@
   color: #61dafb;
 }
 
+.merchItems {
+  display: flex;
+  flex-direction:column;
+
+}
+
+.itemDescription {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+}
+
+.merchItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px;
+}
+
+.itemCountsRow {
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
