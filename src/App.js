@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
 const MOCKITEMS = [
-    {name:"Poster", price: 10.00, options: [ {type: null, countIn: 12, add: 0, totalIn: 12, comp:0, countOut: 0, totalSold: 0, gross: 0} ]},
+    {name:"Poster", price: 10.00, options: [ {type: null, countIn: 12, add: 0, totalIn: 12, comp:0, countOut: 2, totalSold: 0, gross: 0} ]},
     {name:"t-shirt", price: 10.00, options:[ {type: 's', countIn: 12, add: 0, totalIn: 12, comp:0, countOut: 0, totalSold: 0, gross: 0},
                                           {type: 'm', countIn: 12, add: 0, totalIn: 12, comp:0, countOut: 0, totalSold: 0, gross: 0},
                                           {type: 'l', countIn: 12, add: 0, totalIn: 12, comp:0, countOut: 0, totalSold: 0, gross: 0}
@@ -50,24 +51,59 @@ function ItemCounts({ item }) {
 }
 
 function ItemCountsRow({ option }){
+  const [countIn, setCountIn] = useState(option.countIn)
+  const [add, setAdd] = useState(option.add)
+  const [totalIn, setTotalIn] = useState(countIn + add)
+  const [comp, setComp] = useState(option.comp)
+  const [countOut, setCountOut] = useState(option.countOut)
+  const [totalSold, setTotalSold] = useState(totalIn - countOut - comp)
   //render counts for an item
+// Total In = count in + add
+// Total Sold = Total In - count out - comp
+  function handleCountInChange(e){
+    setCountIn(e.target.value)
+    setTotalIn(countIn + add)
+    setTotalSold(totalIn - countOut - comp)
+  }
+  function handleAddChange(e){
+    setAdd(e.target.value)
+    setTotalIn(countIn + add)
+    setTotalSold(totalIn - countOut - comp)
+
+  }
+  function handleCompChange(e){
+    setComp(e.target.value)
+    setTotalIn(countIn + add)
+    setTotalSold(totalIn - countOut - comp)
+  }
+  function handleCountOutChange(e){
+    setCountOut(e.target.value)
+    setTotalIn(countIn + add)
+    setTotalSold(totalIn - countOut - comp)
+  }
+
+
+
+  //pass down an onChange function that updates all the values in this level through state
+
   return(
     <tr className="itemCountsRow">
-      <td><CountInput value={{name: "countIn", val: option.countIn}}/></td>
-      <td><CountInput value={{name: "add", val: option.add}}/></td>
-      <td style={{color:'skyblue'}}> {option.totalIn} </td>
-      <td><CountInput value={{name: "comp", val: option.comp}}/></td>
-      <td><CountInput value={{name: "countOut", val: option.countOut}}/></td>
-      <td style={{color:'skyblue'}}> {option.totalSold} </td>
+      <td><CountInput count={{name: "countIn", val: countIn}} onChange={handleCountInChange}/></td>
+      <td><CountInput count={{name: "add", val: add}} onChange={handleAddChange}/></td>
+      <td style={{color:'skyblue'}}> {totalIn} </td>
+      <td><CountInput count={{name: "comp", val: comp}} onChange={handleCompChange}/></td>
+      <td><CountInput count={{name: "countOut", val: countOut}} onChange={handleCountOutChange}/></td>
+      <td style={{color:'skyblue'}}> {totalSold} </td>
       <td style={{color:'skyblue'}}> {option.gross} </td>
     </tr>
   )
 }
 
-function CountInput({ value }){
+function CountInput({ count, onChange }){
   //template for all of the count inputs that are changeable, gets passed value from item counts row
+ 
   return(
-    <input className="countInput" type="number" id={value.name} name={value.name} defaultValue={value.val}/>
+    <input className="countInput" type="number" id={count.name} name={count.name} defaultValue={count.val} onChange={onChange}/>
   )
 }
 
