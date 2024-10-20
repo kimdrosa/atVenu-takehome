@@ -31,7 +31,8 @@ function ItemCounts({ item }) {
   })
 
   return(
-    <table className="itemCounts">
+    <div className="itemCounts">
+    <table >
       <tr className="itemCountsRow">
         <th> count in </th>
         <th> add </th>
@@ -43,6 +44,8 @@ function ItemCounts({ item }) {
       </tr>
       {counts}
     </table>
+    <ItemTotalsRow />
+    </div>
   )
 }
 
@@ -50,14 +53,21 @@ function ItemCountsRow({ option }){
   //render counts for an item
   return(
     <tr className="itemCountsRow">
-      <td> {option.countIn} </td>
-      <td> {option.add} </td>
-      <td> {option.totalIn} </td>
-      <td> {option.comp} </td>
-      <td> {option.countOut} </td>
-      <td> {option.totalSold} </td>
-      <td> {option.gross} </td>
+      <td><CountInput value={{name: "countIn", val: option.countIn}}/></td>
+      <td><CountInput value={{name: "add", val: option.add}}/></td>
+      <td style={{color:'skyblue'}}> {option.totalIn} </td>
+      <td><CountInput value={{name: "comp", val: option.comp}}/></td>
+      <td><CountInput value={{name: "countOut", val: option.countOut}}/></td>
+      <td style={{color:'skyblue'}}> {option.totalSold} </td>
+      <td style={{color:'skyblue'}}> {option.gross} </td>
     </tr>
+  )
+}
+
+function CountInput({ value }){
+  //template for all of the count inputs that are changeable, gets passed value from item counts row
+  return(
+    <input className="countInput" type="number" id={value.name} name={value.name} defaultValue={value.val}/>
   )
 }
 
@@ -104,8 +114,6 @@ function Summary(props){
 
 function CountsPage() {
   //render header, MerchItems and summary
-
-  //pass in merch items list here
   return(
     <>
     <MerchItems items={MOCKITEMS}/>
