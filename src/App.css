@@ -39,8 +39,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 20px;
-  padding-right: 50px;
+  width: 25%;
+}
+
+.itemCounts {
+  width: 75%;
 }
 
 .merchItem {
@@ -54,25 +57,47 @@
   align-items: center;
   justify-content: space-around;
   margin: none;
-/*  border-style: solid;
-  border-width: 1px;
-  border-color: lightgrey;*/
+  border: solid lightgrey;
+  border-width: .5px;
 }
 
-td {
-  font-weight: 600;
+.itemCountsTitles {
+  color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: none;
+}
+.itemTotalsRow{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: none;
   border: solid lightgrey;
+  border-width: .5px;
+}
+hr{
+  color: grey;
+}
+td {
+  font-weight: 550;
+  border-left: solid lightgrey;
   width: 100%;
+  font-size: 20px;
   text-align: center;
   border-width: .5px;
   padding: 10px;
 }
 .countInput {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 550;
+  font-size: 20px;
   text-align: center;
   width: 100%;
   padding: none;
+  border: none;
+}
+
+input[type=number]:focus {
   border: none;
 }
 
