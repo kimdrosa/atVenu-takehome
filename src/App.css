@@ -37,9 +37,22 @@
 
 .itemDescription {
   display: flex;
+  color: grey;
   flex-direction: row;
   align-items: center;
+  margin-left: 20px;
   width: 25%;
+}
+
+.price {
+  margin: 10px;
+  color: lightgrey;
+}
+
+.imagePlaceholder{
+  background-color: lightskyblue;
+  width: 60px;
+  padding: 50px;
 }
 
 .itemCounts {
@@ -53,26 +66,14 @@
 }
 
 .itemCountsRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: none;
   border: solid lightgrey;
   border-width: .5px;
 }
 
 .itemCountsTitles {
   color: grey;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: none;
 }
 .itemTotalsRow{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: none;
   border: solid lightgrey;
   border-width: .5px;
 }
@@ -81,11 +82,11 @@ hr{
 }
 td {
   font-weight: 550;
-  border-left: solid lightgrey;
-  width: 100%;
+  width: auto;
   font-size: 20px;
   text-align: center;
-  border-width: .5px;
+  border: solid lightgrey;
+  border-width: 0.5px;
   padding: 10px;
 }
 .countInput {
@@ -93,12 +94,14 @@ td {
   font-size: 20px;
   text-align: center;
   width: 100%;
-  padding: none;
+  padding: 0px;
   border: none;
+  box-sizing: border-box;
 }
 
-input[type=number]:focus {
-  border: none;
+input:focus {
+  outline: grey;
+  border: gray;
 }
 
 #add.countInput {

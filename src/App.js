@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, createContext, useContext } from 'react';
 
 const MOCKITEMS = {
     0: {name:"Poster", price: 10.00, options: { 0:{type: null, countIn: 12, add: 0, totalIn: 12, comp:0, countOut: 2, totalSold: 0, gross: 0}}},
@@ -17,13 +17,29 @@ const MOCKITEMS = {
     }
 }
 
+//context to contain state for all options for a merch item, tracks totals, price etc
+const MerchItemContext = createContext()
+
+function MerchItem({ item, merchId }) {
+  const[itemId, setItemId] = useState(merchId)
+  return(
+    <div className="merchItem">
+      <ItemDescription item={item}/>
+      <ItemCounts item={item} merchId={merchId}/>
+      <hr/>
+    </div>
+  )
+}
 
 function ItemDescription({ item }) {
   //include item name image and price
   return(
     <div className="itemDescription">
-      <h1>{item.name}</h1>
-      <h4>{item.price}</h4>
+      <div>
+        <h3>{item.name}</h3>
+        <div className="imagePlaceholder"></div>
+      </div>
+      <h4 className="price">{item.price}</h4>
     </div>
     )
 }
@@ -52,7 +68,6 @@ function ItemCounts({ item, merchId }) {
       {counts}
       <ItemTotalsRow className="itemTotalsRow" merchId={merchId}/>
     </table>
-
     </div>
   )
 }
@@ -91,7 +106,7 @@ function ItemCountsRow({ option, optionId, merchId }){
     setCountOut(e.target.value)
     MOCKITEMS[merchId].options[optionId].countOut = e.target.value
   }
-console.log(MOCKITEMS)
+
   return(
     <tr className="itemCountsRow">
       <td><CountInput count={{name: "countIn", val: countIn}} onChange={handleCountInChange}/></td>
@@ -113,42 +128,43 @@ function CountInput({ count, onChange }){
 }
 
 function ItemTotalsRow({ merchId }){
-  let totalInSum = 0
-  let compSum = 0
-  let countOutSum = 0
-  let totalSoldSum = 0
+  // const [totalInSum, setTotalInSum] = useState(0)
+  // const [compSum, setCompSum] = useState(0)
+  // const [countOutSum, setCountOutSum] = useState(0)
+  // const [totalSoldSum, setTotalSoldSum] = useState(0)
+  // const [gross, setGross] = useState(0)
 
-  let options = MOCKITEMS[merchId].options
+  const totalInSum = useRef(0)
+  const compSum = useRef(0)
+  const countOutSum = useRef(0)
+  const totalSoldSum = useRef(0)
+  const gross = useRef(0)
+  const options = MOCKITEMS[merchId].options
 
   function calculateTotals(){
     for(const key in options){
-      totalInSum += options[key].totalIn
-      compSum += options[key].comp
-      countOutSum += options[key].countOut
-      totalSoldSum += options[key].totalSold
+      totalInSum.current = totalInSum.current + options[key].totalIn
+      compSum.current = compSum.current + options[key].comp
+      countOutSum.current = countOutSum.current + options[key].countOut
+      totalSoldSum.current = totalSoldSum.current + options[key].totalSold
+      gross.current = gross.current + options[key].gross
     }   
   }
 
+  calculateTotals()
+
   return(
     <tr>
-      <td>{totalInSum}</td>
-      <td>{compSum}</td>
-      <td>{countOutSum}</td>
-      <td>{totalSoldSum}</td>
+      <td><button>more</button></td>
+      <td></td>
+      <td>{totalInSum.current}</td>
+      <td>{compSum.current}</td>
+      <td>{countOutSum.current}</td>
+      <td>{totalSoldSum.current}</td>
+      <td>{gross.current}</td>
     </tr>
   )
 
-}
-
-function MerchItem({ item, merchId }) {
-  //render the ItemDescription and Item Counts
-  return(
-    <div className="merchItem">
-    <ItemDescription item={item}/>
-    <ItemCounts item={item} merchId={merchId}/>
-    <hr/>
-    </div>
-  )
 }
 
 function MerchItems({ items }){
