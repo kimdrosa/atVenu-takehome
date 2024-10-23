@@ -17,7 +17,6 @@ const MOCKITEMS = {
     }
 }
 
-//context to contain state for all options for a merch item, tracks totals, price etc
 const MerchItemContext = createContext()
 
 function MerchItem({ merchItem, merchId }) {
@@ -39,11 +38,11 @@ function MerchItem({ merchItem, merchId }) {
     let grossSum = 0 
 
     for(const key in options){
-        totalInSum += options[key].totalIn
-        compSum += options[key].comp
-        countOutSum += options[key].countOut
-        totalSoldSum += options[key].totalSold
-        grossSum += options[key].gross
+        totalInSum += parseInt(options[key].totalIn)
+        compSum += parseInt(options[key].comp)
+        countOutSum += parseInt(options[key].countOut)
+        totalSoldSum += parseInt(options[key].totalSold)
+        grossSum += parseInt(options[key].gross)
       }
 
     setTotals({totalIn:totalInSum, comp: compSum, countOut: countOutSum, totalSold: totalSoldSum, gross:grossSum})
@@ -61,20 +60,19 @@ function MerchItem({ merchItem, merchId }) {
 }
 
 function ItemDescription({ item }) {
-  //include item name image and price
+  const { price } = useContext(MerchItemContext)
   return(
     <div className="itemDescription">
       <div>
         <h3>{item.name}</h3>
         <div className="imagePlaceholder"></div>
       </div>
-      <h4 className="price">${item.price.toFixed(2)}</h4>
+      <h4 className="price">${price.toFixed(2)}</h4>
     </div>
     )
 }
 
 function ItemCounts({ item, merchId }) {
-  //render each row of counts for an item (e.g. if it has multiple sizes)
   let counts = []
   for(const key in item.options){
     counts.push(
@@ -111,43 +109,47 @@ function ItemCountsRow({ option, optionId, merchId }){
   const [totalSold, setTotalSold] = useState(totalIn - countOut - comp)
   const [gross, setGross] = useState(price * totalSold)
 
-
-  let tempItem = item
-
   useEffect(() => {
-    setItem(tempItem)
-   },[totalIn, comp, countOut, totalSold, gross])
 
-  useEffect(() => {
     setTotalIn(parseInt(countIn) + parseInt(add))
-    tempItem.options[optionId].totalIn = parseInt(countIn) + parseInt(add)
-  }, [countIn, add])
+    option.totalIn = parseInt(countIn) + parseInt(add)
 
-  useEffect(() => {
     setTotalSold(parseInt(totalIn) - parseInt(countOut) - parseInt(comp))
-    tempItem.options[optionId].totalSold = parseInt(totalIn) - parseInt(countOut) - parseInt(comp)
-  }, [totalIn, countOut, comp])
+    option.totalSold = parseInt(totalIn) - parseInt(countOut) - parseInt(comp)
 
-  useEffect(() => {
     setGross(totalSold * price)
-    tempItem.options[optionId].gross = totalSold * price
-  }, [totalSold])
+    option.gross = totalSold * price
+
+    let tempOptions = {}
+
+    for(const key in item.options){
+      tempOptions[key] = item.options[key]
+    }
+
+    tempOptions[optionId] = option
+
+    setItem({
+      name: item.name,
+      price: price,
+      options: tempOptions
+    })
+   },[countIn, add, totalIn, comp, countOut, totalSold, gross])
 
   function handleCountInChange(e){
     setCountIn(e.target.value || 0)
-    tempItem.options[optionId].countIn = e.target.value
+    option.countIn = e.target.value
   }
   function handleAddChange(e){
     setAdd(e.target.value || 0)
-    tempItem.options[optionId].add = e.target.value
+    option.add = e.target.value
   }
   function handleCompChange(e){
     setComp(e.target.value || 0)
-    tempItem.options[optionId].comp = e.target.value
+    option.comp = e.target.value
   }
   function handleCountOutChange(e){
     setCountOut(e.target.value || 0)
-    tempItem.options[optionId].countOut = e.target.value
+    option.countOut = e.target.value
   }
 
   return(
@@ -164,7 +166,6 @@ function ItemCountsRow({ option, optionId, merchId }){
 }
 
 function CountInput({ count, onChange }){
-  //template for all of the count inputs that are changeable, gets passed value from item counts row
   return(
     <input className="countInput" type="number" id={count.name} name={count.name} defaultValue={count.val} onChange={onChange}/>
   )
@@ -181,7 +182,7 @@ function ItemTotalsRow({ merchId }){
       <td style={{color:"red", border:"none"}}>{totals.comp}</td>
       <td style={{border:"none"}}>{totals.countOut}</td>
       <td style={{color:"skyblue", border:"none"}}>{totals.totalSold}</td>
-      <td style={{color:"skyblue", border:"none"}}>{totals.gross}</td>
+      <td style={{color:"skyblue", border:"none"}}>${totals.gross.toFixed(2)}</td>
     </tr>
   )
 
@@ -194,7 +195,6 @@ function MoreButton(){
 }
 
 function MerchItems({ items }){
-  //render all merchItems into one component
   let rows = []
 
   for (const key in items){
@@ -221,7 +221,6 @@ function Summary(props){
 
 
 function CountsPage() {
-  //render header, MerchItems and summary
   return(
     <>
     <MerchItems items={MOCKITEMS}/>
