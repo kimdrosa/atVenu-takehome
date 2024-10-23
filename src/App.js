@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect, useRef, createContext, useContext } from 'react';
 
@@ -133,7 +132,7 @@ function ItemCountsRow({ option, optionId, merchId }){
       price: price,
       options: tempOptions
     })
-   },[countIn, add, totalIn, comp, countOut, totalSold, gross])
+   },[price, countIn, add, totalIn, comp, countOut, totalSold, gross])
 
   function handleCountInChange(e){
     setCountIn(e.target.value || 0)
