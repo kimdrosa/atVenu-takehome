@@ -40,6 +40,7 @@
   color: grey;
   flex-direction: row;
   align-items: center;
+  align-self: flex-start;
   margin-left: 20px;
   width: 25%;
 }
@@ -106,10 +107,21 @@ td {
 }
 
 .moreButton {
+  color: grey;
   padding: 10px;
   width: 80px;
   border: lightgray solid;
   border-radius: 2px;
+}
+
+.popup{
+  background-color: grey;
+  font-size: 15px;
+  color: white;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 3px;
+
 }
 
 input:focus {
@@ -123,6 +135,33 @@ input:focus {
 
 #comp.countInput {
   color: red;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: self-end;
+}
+.disableDiv{
+  position: fixed; 
+  top: 0;
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  backgroundColor: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.settleButton {
+  font-weight: 600;
+  font-size: 20px;
+  color: grey;
+  padding: 10px;
+  margin-right: 70px;
+  margin-bottom: 70px;
+  border: solid lightgrey;
+  border-radius: 3px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 @keyframes App-logo-spin {
   from {

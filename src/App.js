@@ -49,7 +49,7 @@ function MerchItem({ merchItem, merchId }) {
   }
 
   return(
-    <MerchItemContext.Provider value={{item, setItem, totals, price}}>
+    <MerchItemContext.Provider value={{item, setItem, totals, price, setPrice}}>
       <div className="merchItem">
         <ItemDescription item={item}/>
         <ItemCounts item={item} merchId={merchId}/>
@@ -189,8 +189,23 @@ function ItemTotalsRow({ merchId }){
 }
 
 function MoreButton(){
+  const { price, setPrice } = useContext(MerchItemContext)
+  const [showPopUp, setShowPopUp] = useState(false)
+
+  function handlePriceChange(e){
+    setPrice(parseInt(e.target.value))
+  }
+
   return(
-    <button className="moreButton"> More </button>
+    <div>
+      <button className="moreButton" onClick={()=>{setShowPopUp(!showPopUp)}}> More </button>
+      <div className="popup" style={{visibility: showPopUp ? 'visible' : 'hidden'}}>
+        <form>
+          <label for='price'> change price </label>
+          <input type='number' id='price' name='price' onChange={handlePriceChange}></input>
+        </form>
+      </div>
+    </div>
   )
 }
 
@@ -215,18 +230,33 @@ function MerchItems({ items }){
   )
 }
 
-function Summary(props){
-  //render summary at the bottom of the page where totals are displayed and the settle button is
+function Summary({onClick}){
+  return(
+    <div className='summary'>
+      <button className="settleButton" onClick={onClick}> SETTLE </button>
+    </div>
+  )
 }
 
 
 function CountsPage() {
-  return(
-    <>
-    <MerchItems items={MOCKITEMS}/>
-    <Summary/>
-    </>
-  )
+  const [hasSettled, setHasSettled] = useState(false)
+
+  if(!hasSettled){
+    return(
+      <>
+      <MerchItems items={MOCKITEMS}/>
+      <Summary onClick={()=>{setHasSettled(true)}}/>
+      </>
+    )
+  } else {
+      return(
+        <>
+        <div className="disableDiv"></div>
+        <MerchItems items={MOCKITEMS}/> 
+        </>
+      )
+    }
 }
 
 function App() {
