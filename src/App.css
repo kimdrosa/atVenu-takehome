@@ -51,32 +51,36 @@
 
 .imagePlaceholder{
   background-color: lightskyblue;
-  width: 60px;
-  padding: 50px;
+  width: 50px;
+  padding: 40px;
 }
 
 .itemCounts {
   width: 75%;
+  padding: 5px;
+
 }
 
 .merchItem {
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-top: solid lightgray 1px;
+  padding: 10px;
+}
+.itemTotalsRow td {
+  border: none !important;
 }
 
 .itemCountsRow {
-  border: solid lightgrey;
+  border-left: solid lightgrey;
   border-width: .5px;
 }
 
 .itemCountsTitles {
   color: grey;
 }
-.itemTotalsRow{
-  border: solid lightgrey;
-  border-width: .5px;
-}
+
 hr{
   color: grey;
 }
@@ -87,6 +91,8 @@ td {
   text-align: center;
   border: solid lightgrey;
   border-width: 0.5px;
+  border-spacing: 0;
+  border-collapse: collapse;
   padding: 10px;
 }
 .countInput {
@@ -97,6 +103,13 @@ td {
   padding: 0px;
   border: none;
   box-sizing: border-box;
+}
+
+.moreButton {
+  padding: 10px;
+  width: 80px;
+  border: lightgray solid;
+  border-radius: 2px;
 }
 
 input:focus {
